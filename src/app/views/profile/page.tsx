@@ -1,67 +1,83 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import ProfileCard from "./_components/ProfileCard";
 import { useRouter } from "next/navigation";
 import Button from "@/app/Components/Ui/Button";
+import CardSkeleton from "./_components/CardSkeleton";
+import { fetchFullUserData } from "./_fetch/fetchData";
 
-interface UserData {
-  username: string;
-  email: string;
-  city: string;
-  country: string;
-  birthDate: string;
-  age: string;
-  phone: string;
-  personalInfo1: string;
-  personalInfo2: string;
-  personalInfo3: string;
-}
+export interface UserDataProps {
+  username?: string;
+  email?: string;
+  address: {
+    city?: string;
+    country?: string;
+  };
+  birthDate?: string;
+  age?: string;
+  phone?: string;
+  bloodGroup?: string;
+  gender?: string;
+  weight?: string;
+  image: string;
+} //interfaz de datos reutilizable, podría separarse en otro archivo .types, pero no fue necesario de momento
 
-const ProfilePage = () => {
-  const [user, setUser] = useState<UserData | null>(null);
+const ProfilePageFetch = () => {
+  //componente fetch para hacer primero la carga de datos y posteriormente renderizar
+  const [user, setUser] = useState<UserDataProps | null>(null);
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    router.push('/views/login'); 
+  const handleLogout = () => { //se elimina el token del local y redirige al login
+    localStorage.removeItem("token");
+    router.push("/views/login");
   };
-  useEffect(() => {
+  useEffect(() => { //useEffect para hacer fetch de la data del user
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
 
-    if (!token || !userData) {
-      router.push("/login");
+    if (!token || !userData) { //si no hay sesión, regresa al login y termina el proceso
+      router.push("/views/login");
       return;
     }
 
     const parsedUser = JSON.parse(userData);
-
-    const userProfile: UserData = {
-      username: parsedUser.username,
-      email: parsedUser.email,
-      city: parsedUser?.address?.city || "Ciudad no disponible",
-      country: parsedUser?.address?.country || "País no disponible",
-      birthDate: parsedUser?.birthDate || "2002-10-27",
-      age: parsedUser?.age?.toString() || "22",
-      phone: parsedUser.phone || "Sin teléfono",
-      personalInfo1: "Info personal 1",
-      personalInfo2: "Info personal 2",
-      personalInfo3: "Info personal 3",
+    const getUserData = async () => { //llamamos al fetch de toda la data consultando con el id
+      try {
+        const fullUser = await fetchFullUserData(parsedUser.id);
+        setUser(fullUser);
+      } catch (error) {
+        console.error("Error al obtener la información del usuario:", error);
+        router.push("/views/login");
+      }
     };
 
-    setUser(userProfile);
-  }, []);
+    getUserData();
+  }, [router]);
 
   if (!user) return null;
 
-  return (
+  return ( //componentes del profile
     <div className="w-full h-screen flex flex-col justify-center items-center p-5">
       <ProfileCard {...user} />
-      <div className="w-40 mt-auto self-end">
-        <Button colorType="bg-secondary" text="Cerrar sesión" type="button"  onClick={handleLogout} />
+      <div className="absolute bottom-5 right-5 w-40">
+        <Button
+          colorType="bg-secondary"
+          text="Cerrar sesión"
+          type="button"
+          onClick={handleLogout}
+        />
       </div>
     </div>
+  );
+};
+
+const ProfilePage = () => { 
+  // suspense para mostrar uun componente de carga mientras se hace el fetch y no dejar vacío
+  return (
+    <Suspense fallback={<CardSkeleton />}> 
+      <ProfilePageFetch />
+    </Suspense>
   );
 };
 

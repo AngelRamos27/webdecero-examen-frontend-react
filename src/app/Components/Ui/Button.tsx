@@ -6,9 +6,10 @@ interface colorType {
   type: "submit" | "reset" | "button";
   colorText?: string;
   onClick?: () => void;
-}
+} // interfaz de datos a recibir
 
 const Button = ({ colorType, text, type, colorText, onClick }: colorType) => {
+  //botón personalizado, que recibe distintos datos, reutilizable
   return (
     <button
       onClick={onClick}

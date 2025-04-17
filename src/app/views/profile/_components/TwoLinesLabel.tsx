@@ -6,7 +6,7 @@ interface dataProps {
   secondLine: string;
   color: string;
   isBold: boolean;
-}
+} //interfaz de datos
 
 const TwoLinesLabel = ({
   data,
@@ -24,3 +24,5 @@ const TwoLinesLabel = ({
 };
 
 export default TwoLinesLabel;
+
+// componente para ser reutilizado y reducir líneas de código en otro

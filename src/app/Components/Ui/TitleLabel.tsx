@@ -5,9 +5,9 @@ interface labelData {
   color: string;
   size: string;
   isBold: boolean;
-}
+}// interfaz de datos
 
-const TitleLabel = ({ text, color, size, isBold }: labelData) => {
+const TitleLabel = ({ text, color, size, isBold }: labelData) => { 
   return (
     <div
       className={`${color} ${
@@ -20,3 +20,4 @@ const TitleLabel = ({ text, color, size, isBold }: labelData) => {
 };
 
 export default TitleLabel;
+// componente reutilizable para titulos

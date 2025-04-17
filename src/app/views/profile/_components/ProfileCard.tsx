@@ -4,40 +4,30 @@ import React from "react";
 import TwoLinesLabel from "./TwoLinesLabel";
 import PersonalInfo from "./PersonalInfo";
 import ProfilePhoto from "./ProfilePhoto";
+import { UserDataProps } from "../page";
 
-interface ProfileCardProps {
-  username?: string;
-  email?: string;
-  city?: string;
-  country?: string;
-  birthDate?: string;
-  age?: string;
-  phone?: string;
-  personalInfo1?: string;
-  personalInfo2?: string;
-  personalInfo3?: string;
-}
+
 
 const ProfileCard = ({
   username,
   email,
-  city,
-  country,
+  address,
   birthDate,
   age,
   phone,
-  personalInfo1,
-  personalInfo2,
-  personalInfo3,
-}: ProfileCardProps) => {
+  bloodGroup,
+  gender,
+  weight,
+  image,
+}: UserDataProps) => { //se exporta la interfaz de datos del componente padre
   return (
-    <div className="lg:w-3/8 w-80 lg:h-3/5 h-96 p-1 bg-white rounded-md flex flex-col  justify-center items-center">
+    <div className="max-w-md lg:max-w-lg h-auto p-7 bg-white rounded-md flex flex-col  justify-center items-center">
       <div className="absolute lg:top-[10%]  top-[13%] left-1/2 transform -translate-x-1/2 lg:w-30 w-26 z-[10]">
-        <ProfilePhoto alt="photo user" position="" />
+        <ProfilePhoto alt="photo user" img={image} />
       </div>
       <div className="w-full flex justify-center flex-col gap-8">
         <div className="flex flex-col w-full  justify-center items-center pt-14">
-          <TitleLabel
+          <TitleLabel // componente para hacer etiquetas para titulos, adaptable y reusable
             text={username ?? "Nombre completo del usuario"}
             color="text-secondary"
             isBold={true}
@@ -52,50 +42,53 @@ const ProfileCard = ({
           <div className="flex justify-center items-center gap-1">
             <MarkerIcon className="w-5 h-5 text-black font-bold" />
             <TitleLabel
-              text={city ?? "Ciudad"}
+              text={address.city ?? "Ciudad"}
               color="black"
               isBold={true}
               size="text-sm"
             />
             -
             <TitleLabel
-              text={country ?? "País"}
+              text={address.country ?? "País"}
               color="black"
               isBold={true}
-              size="text-md"
+              size="text-sm"
             />
           </div>
         </div>
         {/* Primera sección */}
         <div className="flex w-full lg:gap-20 gap-5 justify-center items-center">
-          <TwoLinesLabel
+          <TwoLinesLabel // componente para evitar repetir varios divs y hacer el componente más pequeño
             color="text-slate-700"
             data={birthDate ?? "2002-10-27"}
             isBold={true}
-            size={"md:text-xl text-md"}
+            size={"md:text-lg text-md"}
             secondLine="Cumpleaños"
           />
           <TwoLinesLabel
             color="text-slate-700"
             data={age ?? "22"}
             isBold={true}
-            size={"md:text-xl text-md"}
+            size={"md:text-lg text-md"}
             secondLine="Edad"
           />
           <TwoLinesLabel
             color="text-slate-700"
             data={phone ?? "4431723002"}
             isBold={true}
-            size={"md:text-xl text-md"}
+            size={"md:text-lg text-md"}
             secondLine="Teléfono"
           />
         </div>
         {/* segunda sección */}
-        <div className="w-full flex-col flex gap-1 lg:pl-24 justify-center  pb-5">
-          <PersonalInfo number={"1"} information={personalInfo1 ?? "usuario"} />
-          <PersonalInfo number={"2"} information={personalInfo2 ?? "usuario"} />
-          <PersonalInfo number={"3"} information={personalInfo3 ?? "usuario"} />
-        </div>{" "}
+        <div className="w-full flex-col flex gap-1  justify-center  pb-5">
+          <PersonalInfo // Mismo caso que el anterior, componente para reducir líneas en este card
+            title={"Tipo de sangre"}
+            information={bloodGroup ?? "usuario"}
+          />
+          <PersonalInfo title="Género " information={gender ?? "usuario"} />
+          <PersonalInfo title="Peso en kg" information={weight ?? "usuario"} />
+        </div>
         {/* Tercera sección */}
       </div>
     </div>
