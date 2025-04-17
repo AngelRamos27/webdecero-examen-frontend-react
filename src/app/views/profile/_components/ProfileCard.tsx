@@ -6,7 +6,11 @@ import PersonalInfo from "./PersonalInfo";
 import ProfilePhoto from "./ProfilePhoto";
 import { UserDataProps } from "../page";
 
-
+const GENDER_LABELS = {
+  //key y value para poner los valores según su genero
+  male: "Masculino",
+  female: "Femenino",
+} as const;
 
 const ProfileCard = ({
   username,
@@ -19,10 +23,11 @@ const ProfileCard = ({
   gender,
   weight,
   image,
-}: UserDataProps) => { //se exporta la interfaz de datos del componente padre
+}: UserDataProps) => {
+  //se exporta la interfaz de datos del componente padre
   return (
-    <div className="max-w-md lg:max-w-lg h-auto p-7 bg-white rounded-md flex flex-col  justify-center items-center">
-      <div className="absolute lg:top-[10%]  top-[13%] left-1/2 transform -translate-x-1/2 lg:w-30 w-26 z-[10]">
+    <div className="max-w-md lg:max-w-lg h-auto p-7 bg-white rounded-md flex flex-col justify-center items-center relative">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-68 z-[10] w-32 h-32">
         <ProfilePhoto alt="photo user" img={image} />
       </div>
       <div className="w-full flex justify-center flex-col gap-8">
@@ -86,7 +91,12 @@ const ProfileCard = ({
             title={"Tipo de sangre"}
             information={bloodGroup ?? "usuario"}
           />
-          <PersonalInfo title="Género " information={gender ?? "usuario"} />
+          <PersonalInfo
+            title="Género "
+            information={
+              GENDER_LABELS[gender as keyof typeof GENDER_LABELS] ?? "usuario"
+            }
+          />
           <PersonalInfo title="Peso en kg" information={weight ?? "usuario"} />
         </div>
         {/* Tercera sección */}

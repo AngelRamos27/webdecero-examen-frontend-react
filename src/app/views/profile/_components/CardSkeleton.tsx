@@ -1,7 +1,8 @@
 import MarkerIcon from "@/app/Components/Icons/MarkerIcon";
 import React from "react";
 
-const CardSkeleton = () => { //skeleton para cuando se hace el fetch del card del usuario
+const CardSkeleton = () => {
+  //skeleton para cuando se hace el fetch del card del usuario
   return (
     <div className="max-w-md lg:max-w-lg h-auto p-7 bg-white rounded-md flex flex-col  justify-center items-center">
       <div className="w-full flex justify-center flex-col gap-8">
@@ -32,7 +33,7 @@ const CardSkeleton = () => { //skeleton para cuando se hace el fetch del card de
           </div>
         </div>
         {/* segunda sección */}
-        <div className="w-full flex-col flex gap-1 lg:pl-24 justify-center  pb-5">
+        <div className="w-full flex-col flex gap-1 items-center lg:items-start  justify-center pb-5">
           <div className="h-5 w-56 bg-gray-300 rounded-md animate-pulse" />
           <div className="h-5 w-56 bg-gray-300 rounded-md animate-pulse" />
           <div className="h-5 w-56 bg-gray-300 rounded-md animate-pulse" />
