@@ -29,7 +29,8 @@ const LoginPage = () => {
         className="p-8 rounded-lg  w-96 flex flex-col gap-5"
       >
         <Input //uso del input presonalizado, en conjunto de useForm
-          {...register("username", { required: "Usuario requerido" })} //se indica el campo y se pone una validación (no se usó regex dado la simplesa de los datos ni otras indicaciones)
+          {...register("username", { required: "Usuario requerido" })} //se indica el campo y se pone una validación 
+          // (no se usó regex dado la simplesa de los datos ni otras indicaciones)
           name="username"
           placeholder="Usuario"
           type="text"
@@ -46,10 +47,9 @@ const LoginPage = () => {
         {errors.password && (
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
-        {error && (
+        {error && ( // error del auth
           <p className="text-red-500 text-sm text-center font-bold">{error}</p>
         )}
-        {/* error en la auth */}
         <Button type="submit" colorType="bg-secondary" text="AUTENTICAR" /> {/*componente personalizado del button */}
       </form>
     </div>

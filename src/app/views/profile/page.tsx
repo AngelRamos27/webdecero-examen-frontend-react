@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Button from "@/app/Components/Ui/Button";
 import CardSkeleton from "./_components/CardSkeleton";
 import { fetchFullUserData } from "./_fetch/fetchData";
+import DialogCloseSession from "./_components/DialogCloseSession";
+import { useAuth } from "@/app/Hooks/useAuth";
 
 export interface UserDataProps {
   username?: string;
@@ -26,12 +28,8 @@ export interface UserDataProps {
 const ProfilePage = () => {
   const [user, setUser] = useState<UserDataProps | null>(null);
   const router = useRouter();
+  const { logout } = useAuth(); //uso de nuestro hook para cerrar sesión
 
-  const handleLogout = () => {
-    //se elimina el token del local y redirige al login
-    localStorage.removeItem("token");
-    router.push("/views/login");
-  };
   useEffect(() => {
     //useEffect para hacer fetch de la data del user
     const token = localStorage.getItem("token");
@@ -58,7 +56,8 @@ const ProfilePage = () => {
     getUserData();
   }, [router]);
 
-  if (!user) // skeleton del componente para no dejar vacío mientras renderiza los datos asincrónos
+  if (!user)
+    // skeleton del componente para no dejar vacío mientras renderiza los datos asincrónos
     return (
       <div className="w-full h-screen flex items-center justify-center bg-primary">
         <CardSkeleton />
@@ -70,15 +69,12 @@ const ProfilePage = () => {
     <div className="w-full h-screen flex flex-col justify-center items-center p-5">
       <ProfileCard {...user} />
       <div className="absolute bottom-5 right-5 w-40">
-        <Button
-          colorType="bg-secondary"
-          text="Cerrar sesión"
-          type="button"
-          onClick={handleLogout}
-        />
+        <DialogCloseSession onLogout={logout}>
+          {/*  componente dialog para cerrar la sesión, recibe el button como children */}
+          <Button colorType="bg-secondary" text="Cerrar sesión" type="button" />
+        </DialogCloseSession>
       </div>
     </div>
   );
 };
-
 export default ProfilePage;

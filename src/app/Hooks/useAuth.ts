@@ -7,9 +7,11 @@ export const useAuth = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const login = async (username: string, password: string) => { // función para realizar el login con username y pass
+  const login = async (username: string, password: string) => {
+    // función para realizar el login con username y pass
     try {
-      const res = await fetch("https://dummyjson.com/auth/login", { // consulta a la api
+      const res = await fetch("https://dummyjson.com/auth/login", {
+        // consulta a la api
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }), //se manda el json de los datos en el body
@@ -33,12 +35,19 @@ export const useAuth = () => {
     }
   };
 
-  useEffect(() => { // checa sí ya hay token de la auth, y redirige
+  useEffect(() => {
+    // checa sí ya hay token de la auth, y redirige
     const token = localStorage.getItem("token");
     if (token) {
       router.push("/views/profile");
     }
   }, [router]);
 
-  return { login, error };
+  const logout = () => {
+    //se elimina el token del local y redirige al login
+    localStorage.removeItem("token");
+    router.push("/views/login");
+  };
+
+  return { login, logout, error };
 };
